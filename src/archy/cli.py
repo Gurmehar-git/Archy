@@ -125,7 +125,11 @@ def _require(ok: bool, flag: str, constraint: str, value: object) -> None:
 
 
 @main.command()
-@click.argument("path", type=click.Path(exists=True, file_okay=False, path_type=Path))
+@click.argument(
+    "path",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    default=".",
+)
 @click.option(
     "--format",
     "fmt",
@@ -158,7 +162,11 @@ def graph(path: Path, fmt: str, internal_only: bool) -> None:
 
 
 @main.command()
-@click.argument("path", type=click.Path(exists=True, file_okay=False, path_type=Path))
+@click.argument(
+    "path",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    default=".",
+)
 @click.option(
     "--format",
     "fmt",
