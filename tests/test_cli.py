@@ -60,6 +60,18 @@ def _make_empty_package_project(tmp_path: Path) -> Path:
     return tmp_path
 
 
+@pytest.mark.parametrize("args", [["cycles"], ["graph", "--internal-only"]])
+def test_graph_commands_default_to_current_directory(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, args: list[str]
+):
+    project = _make_cyclic_project(tmp_path)
+    monkeypatch.chdir(project)
+    result = CliRunner().invoke(main, args)
+    assert result.exit_code == 0, result.output
+    assert "pkg.a" in result.output
+    assert "pkg.b" in result.output
+
+
 def test_cycles_text_output_lists_cycle(tmp_path: Path):
     project = _make_cyclic_project(tmp_path)
     result = CliRunner().invoke(main, ["cycles", str(project)])
